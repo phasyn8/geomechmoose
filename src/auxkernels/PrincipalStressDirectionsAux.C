@@ -11,10 +11,8 @@
 
 #include "metaphysicl/raw_type.h"
 
-registerMooseObject("SolidMechanicsApp", PrincipalStressDirectionsAux);
-registerMooseObject("SolidMechanicsApp", ADPrincipalStressDirectionsAux);
-registerMooseObject("SolidMechanicsApp", MaterialSymmetricRankFourTensorAux);
-registerMooseObject("SolidMechanicsApp", ADMaterialSymmetricRankFourTensorAux);
+registerMooseObject("geomechApp", PrincipalStressDirectionsAux);
+registerMooseObject("geomechApp", ADPrincipalStressDirectionsAux);
 
 template <typename T, bool is_ad>
 InputParameters
@@ -43,15 +41,19 @@ template <typename T, bool is_ad>
 Real
 PrincipalStressDirectionsAuxTempl<T, is_ad>::getRealValue()
 {
-  RankTwoTensor eigvecs=RankTwoTensor();
+  RankTwoTensor eigvecs = RankTwoTensor();
   std::vector<Real> eigvals;
-
-
-  this->symmetricEigenvaluesEigenvectors(eigvals,eigvecs)
-  return MetaPhysicL::raw_value(eigvecs->_full_value(_i, _j));
+  RankTwoTensor my_stress;
+  for (int i = 0; i < 2; ++i)
+  {
+    for (int j = 0; j < 2; ++j)
+    {
+      my_stress(i, j) = MetaPhysicL::raw_value(this->_full_value(i, j));
+    }
+  }
+  my_stress.symmetricEigenvaluesEigenvectors(eigvals, eigvecs);
+  return MetaPhysicL::raw_value(eigvecs(_i, _j));
 }
 
 template class PrincipalStressDirectionsAuxTempl<RankTwoTensor, false>;
 template class PrincipalStressDirectionsAuxTempl<RankTwoTensor, true>;
-template class PrincipalStressDirectionsAuxTempl<SymmetricRankFourTensor, false>;
-template class PrincipalStressDirectionsAuxTempl<SymmetricRankFourTensor, true>;

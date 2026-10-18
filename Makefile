@@ -1,4 +1,4 @@
-###############################################################################
+
 ################### MOOSE Application Standard Makefile #######################
 ###############################################################################
 #
@@ -7,7 +7,7 @@
 #
 ###############################################################################
 # Use the MOOSE submodule if it exists and MOOSE_DIR is not set
-MOOSE_SUBMODULE    := $(CURDIR)/moose
+MOOSE_SUBMODULE    := /Users/amjonz/projects/moose
 ifneq ($(wildcard $(MOOSE_SUBMODULE)/framework/Makefile),)
   MOOSE_DIR        ?= $(MOOSE_SUBMODULE)
 else
@@ -30,7 +30,7 @@ CHEMICAL_REACTIONS          := no
 CONTACT                     := no
 ELECTROMAGNETICS            := no
 EXTERNAL_PETSC_SOLVER       := no
-FLUID_PROPERTIES            := no
+FLUID_PROPERTIES            := yes
 FSI                         := no
 FUNCTIONAL_EXPANSION_TOOLS  := no
 GEOCHEMISTRY                := no
@@ -47,7 +47,7 @@ REACTOR                     := no
 RDG                         := no
 RICHARDS                    := no
 SOLID_MECHANICS             := yes
-STOCHASTIC_TOOLS            := no
+STOCHASTIC_TOOLS            := yes
 THERMAL_HYDRAULICS          := no
 XFEM                        := no
 
